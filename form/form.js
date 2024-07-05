@@ -76,37 +76,29 @@ $(document).ready(function () {
         // Validate Password
         if (id === 'password') {
             var password = field.val().trim();
-            if (password === '') {
-                $('#passwordError').text('Password is required').css('color', 'red');
+            var strength = checkPasswordStrength(password);
+            if (strength <= 2) {
+                $('#passwordError').text('Password is weak').css('color', 'red');
                 isValid = false;
+            } else if (strength <= 4) {
+                $('#passwordError').text('Password is medium').css('color', 'orange');
+                isValid = true;
             } else {
-                if (password.length < 6) {
-                    $('#passwordError').text('Password must be at least 6 characters').css('color', 'red');
-                    isValid = false;
-                } else {
-                    var containsUpperCase = /[A-Z]/.test(password);
-                    var containsLowerCase = /[a-z]/.test(password);
-                    var containsNumbers = /\d/.test(password);
-                    var containsSpecialChars = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password);
-
-                    if (!containsUpperCase) {
-                        $('#passwordError').text('Password must contain at least one uppercase letter').css('color', 'red');
-                        field.css('border', '1px solid red');
-                        isValid = false;
-                    } else if (!containsLowerCase) {
-                        $('#passwordError').text('Password must contain at least one lowercase letter').css('color', 'red');
-                        isValid = false;
-                    } else if (!containsNumbers) {
-                        $('#passwordError').text('Password must contain at least one number').css('color', 'red');
-                        isValid = false;
-                    } else if (!containsSpecialChars) {
-                        $('#passwordError').text('Password must contain at least one special character').css('color', 'red');
-                        isValid = false;
-                    } else {
-                        $('#passwordError').text('');
-                    }
-                }
+                $('#passwordError').text('Password is strong').css('color', 'green');
+                isValid = true;
             }
+            $('#confirmPassword').val('');
+            $('#confirmPasswordError').text('');
+        }
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length > 6 || password.length == '') strength++;
+            if (password.length >= 10) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[A-Za-z0-9]/.test(password)) strength++;
+            return strength;
         }
 
 
@@ -122,11 +114,10 @@ $(document).ready(function () {
                     $('#confirmPasswordError').text('Passwords do not match').css('color', 'red');
                     isValid = false;
                 } else {
-                    $('#confirmPasswordError').text('');
+                    $('#confirmPasswordError').text('Password match').css('color', 'green');
                 }
             }
         }
-
         return isValid;
     }
 
@@ -158,13 +149,16 @@ $(document).ready(function () {
         if ($(this).val().trim() !== '') {
             $('#' + id + 'Error').text('');
             if (id === 'password') {
-                $('#confirmPasswordError').text('');
+                validateField($(this));
+            }
+            if (id === 'confirmPassword') {
+                validateField($(this)); 
             }
         }
     });
 
     function clearForm() {
-        $('#registrationForm')[0].reset(); 
+        $('#registrationForm')[0].reset();
     }
 
     function scrollToFormData() {
