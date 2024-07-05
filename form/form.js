@@ -23,6 +23,9 @@ $(document).ready(function () {
             if (firstName === '') {
                 $('#firstNameError').text('First Name is required').css('color', 'red');
                 isValid = false;
+            }else if (firstName.length<=2) {
+                $('#firstNameError').text('First Name is not valid').css('color', 'red');
+                isValid = false;
             } else {
                 $('#firstNameError').text('');
             }
@@ -33,6 +36,9 @@ $(document).ready(function () {
             var lastName = field.val().trim();
             if (lastName === '') {
                 $('#lastNameError').text('Last Name is required').css('color', 'red');
+                isValid = false;
+            }else if (lastName.length<=2) {
+                $('#lastNameError').text('Last Name is not valid').css('color', 'red');
                 isValid = false;
             } else {
                 $('#lastNameError').text('');
@@ -65,7 +71,7 @@ $(document).ready(function () {
             } else {
                 var phonePattern = /^\d{10}$/;
                 if (!phonePattern.test(phone)) {
-                    $('#phoneError').text('Invalid phone number format').css('color', 'red');
+                    $('#phoneError').text('Phone number contains 10 digits').css('color', 'red');
                     isValid = false;
                 } else {
                     $('#phoneError').text('');
@@ -77,22 +83,23 @@ $(document).ready(function () {
         if (id === 'password') {
             var password = field.val().trim();
             var strength = checkPasswordStrength(password);
-            if (strength <= 2) {
+            if (password === '') {
+                $('#passwordError').text('Password is required').css('color', 'red');
+                isValid = false;
+            }
+            else if (strength <= 2) {
                 $('#passwordError').text('Password is weak').css('color', 'red');
                 isValid = false;
             } else if (strength <= 4) {
                 $('#passwordError').text('Password is medium').css('color', 'orange');
                 isValid = true;
             } else {
-                $('#passwordError').text('Password is strong').css('color', 'green');
-                isValid = true;
+                $('#passwordError').text('').css('border', 'green');
             }
-            $('#confirmPassword').val('');
-            $('#confirmPasswordError').text('');
         }
         function checkPasswordStrength(password) {
             let strength = 0;
-            if (password.length > 6 || password.length == '') strength++;
+            if (password.length > 6) strength++;
             if (password.length >= 10) strength++;
             if (/[A-Z]/.test(password)) strength++;
             if (/[a-z]/.test(password)) strength++;
@@ -114,10 +121,11 @@ $(document).ready(function () {
                     $('#confirmPasswordError').text('Passwords do not match').css('color', 'red');
                     isValid = false;
                 } else {
-                    $('#confirmPasswordError').text('Password match').css('color', 'green');
+                    $('#confirmPasswordError').text('');
                 }
             }
         }
+
         return isValid;
     }
 
@@ -149,9 +157,9 @@ $(document).ready(function () {
         if ($(this).val().trim() !== '') {
             $('#' + id + 'Error').text('');
             if (id === 'password') {
-                validateField($(this));
+                $('#confirmPassword').val(''); 
             }
-            if (id === 'confirmPassword') {
+            if (id === 'password' || id === 'firstName' || id === 'lastName' || id === 'email' || id === 'confirmPassword' || id === 'phone') {
                 validateField($(this)); 
             }
         }
