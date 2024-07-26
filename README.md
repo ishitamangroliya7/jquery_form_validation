@@ -4,7 +4,8 @@ This project implements a responsive form with client-side validation using jQue
 The form includes fields for first name, last name, email, phone number, password, and confirm password. 
 Error messages are displayed in real-time to guide the user in correcting their input.
 
-Features
+Features ==>
+
 Responsive Design: The form layout adjusts to various screen sizes using Bootstrap.
 
 Real-time Validation: Each input field is validated as the user types, with error messages displayed immediately.
@@ -14,7 +15,8 @@ Password Visibility Toggle: Users can toggle the visibility of the password fiel
 Form Data Display: Submitted form data is displayed on the same page after successful validation.
 
 
-Technologies Used
+
+Technologies Used ==>
 
 HTML5: Markup for structuring the form.
 
